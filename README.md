@@ -1,8 +1,8 @@
-# Random.org JSON-RPC API for JS
+# Random.Org JSON-RPC API in JS
 
 [![Build Status](https://travis-ci.org/tunnckoCore/randomorg-js.png)](https://travis-ci.org/tunnckoCore/randomorg-js) [![Dependencies Status](https://david-dm.org/tunnckoCore/randomorg-js/status.svg)](https://david-dm.org/tunnckoCore/randomorg-js)
 
-> Random.org JSON-RPC API for Javascript. For browser and node.
+> [Random.org](http://random.org) JSON-RPC API in Javascript. For browser and Node.
 
 ## Install
 
