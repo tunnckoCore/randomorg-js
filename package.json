@@ -1,0 +1,37 @@
+{
+  "name": "randomorg-js",
+  "description": "Random.Org JSON-RPC API in Javascript for NodeJS and Browser",
+  "version": "0.0.1",
+  "files": [
+    "index.js",
+    "example.js",
+    "test.node.js",
+    "test.browser.html",
+    "Makefile",
+    "README.md"
+  ],
+  "author": "Charlike Mike Reagent <mameto_100@mail.bg>",
+  "scripts": {
+    "start": "make start",
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tunnckoCore/randomorg-js"
+  },
+  "keywords": [
+    "javascript",
+    "randomorg",
+    "jsonrpc",
+    "api",
+    "random",
+    "node",
+    "browser"
+  ],
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "requestify": "0.1.16"
+  },
+  "license": "MIT"
+}
