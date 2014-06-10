@@ -1,7 +1,7 @@
 {
   "name": "randomorg-js",
   "description": "Random.Org JSON-RPC API in Javascript for NodeJS and Browser",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "files": [
     "index.js",
     "example.js",
