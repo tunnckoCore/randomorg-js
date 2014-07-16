@@ -1,6 +1,6 @@
 {
   "name": "randomorg-js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Streaming Random.org JSON-RPC Javascript API - for node, command line (cli) and the browser.",
   "main": "index.js",
   "scripts": {
