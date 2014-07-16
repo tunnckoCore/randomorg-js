@@ -1,37 +1,38 @@
 {
-  "name": "randomorg-js",
-  "description": "Random.Org JSON-RPC API in Javascript for NodeJS and Browser",
-  "version": "0.0.2",
-  "files": [
-    "index.js",
-    "example.js",
-    "test.node.js",
-    "test.browser.html",
-    "Makefile",
-    "README.md"
-  ],
-  "author": "Charlike Mike Reagent <mameto_100@mail.bg>",
+  "name": "js-code-context",
+  "version": "1.1.0",
+  "description": "RegExp expressions to parse javascript code context - for node and the browser.",
+  "main": "index.js",
   "scripts": {
-    "start": "make start",
-    "test": "make test"
+    "test": "mocha -R spec"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tunnckoCore/randomorg-js"
+  "bin": {
+    "jsCodeContext": "cli.js"
   },
+  "repository": "tunnckoCore/js-code-context",
   "keywords": [
+    "regexp",
+    "regex",
+    "parse",
     "javascript",
-    "randomorg",
-    "jsonrpc",
-    "api",
-    "random",
+    "code",
+    "context",
     "node",
     "browser"
   ],
+  "dependencies": {},
   "devDependencies": {
-    "mocha": "*",
-    "should": "*",
-    "requestify": "0.1.16"
+    "mocha": "~1.20.1",
+    "should": "~4.0.4",
+    "minimist": "^0.2.0"
   },
-  "license": "MIT"
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/tunnckoCore/js-code-context/blob/master/license.md"
+  }],
+  "author": {
+    "name": "Charlike Mike Reagent",
+    "email": "mameto_100@mail.bg",
+    "url": "http://www.whistle-bg.tk"
+  }
 }
