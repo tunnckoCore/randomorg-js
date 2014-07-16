@@ -4,6 +4,7 @@
 [![NPM version][npmjs-shields]][npmjs-url]
 [![Using ferver][ferver-img]][ferver-url]
 [![Build Status][travis-img]][travis-url]
+[![Deps Status][depstat-img]][depstat-url]
 
 
 ## Install [![Nodei.co stats][npmjs-install]][npmjs-url] 
