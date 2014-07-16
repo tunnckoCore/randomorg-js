@@ -1,8 +1,11 @@
 #!/usr/bin/env node
+
+//@todo
+
 'use strict';
 var argv = require('minimist')(process.argv.slice(2));
-var pkg = require('./package.json');
-var parseCodeContext = require('./index');
+var pkg = require('../package.json');
+var parseCodeContext = require('../index');
 var fs = require('fs');
 var isLine = argv.line || argv.l;
 var isFile = argv.file || argv.f;

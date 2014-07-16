@@ -1,165 +1,290 @@
 /*!
- * js-code-context <https://github.com/tunnckoCore/js-code-context>
+ * randomorg-js <https://github.com/tunnckoCore/randomorg-js>
  *
  * Copyright (c) 2014 Charlike Mike Reagent, contributors.
  * Released under the MIT license.
  */
 (function() {
   'use strict';
-
-  var syncResult = [];
-
-  function parseCodeContextSync(context, line) {
-    var done = function(err, res) {
-      syncResult = err ? [err] : res;
-    };
-    if (!line) {
-      line = done;
-    }
-    parseCodeContext(context, line, done);
-    return syncResult;
-  }
-  function parseCodeContext(context, line, cback) {
-    var content, result = [];
-    if (typeof line === 'number') {
-      content = [context.split('\n')[line]];
-    } else if (!cback && typeof line === 'function') {
-      cback = line;
-      content = context.split('\n');
-    } else {
-      content = context.split('\n');
-    }
-
-    each(content, function(item, index, done) {
-      index = index;
-      // function statement
-      if (/^function ([\w$]+) *\((.*)\)/.exec(item)) {
-        result.push({
-          type: 'function',
-          name: RegExp.$1,
-          clean: RegExp.$1,
-          args: RegExp.$2,
-          string: RegExp.$1 + '()',
-          full: RegExp.$1 + '(' + RegExp.$2 + ')'
-        });
-        // function expression
-      } else if (/^var *([\w$]+)[ \t]*=[ \t]*function[\s\w]*\((.*)\)/.exec(item)) {
-        result.push({
-          type: 'function',
-          name: RegExp.$1,
-          clean: RegExp.$1,
-          args: RegExp.$2,
-          string: RegExp.$1 + '()',
-          full: RegExp.$1 + '(' + RegExp.$2 + ')'
-        });
-        // prototype method
-      } else if (/^([\w$]+)\.prototype\.([\w$]+)[ \t]*=[ \t]*function[\s\w]*\((.*)\)/.exec(item)) {
-        result.push({
-          type: 'method',
-          constructor: RegExp.$1,
-          cons: RegExp.$1,
-          name: RegExp.$2,
-          clean: RegExp.$1 + '.prototype.' + RegExp.$2,
-          args: RegExp.$3,
-          string: RegExp.$1 + '.prototype.' + RegExp.$2 + '()',
-          full: RegExp.$1 + '.prototype.' + RegExp.$2 + '(' + RegExp.$3 + ')',
-        });
-        // prototype property
-      } else if (/^([\w$]+)\.prototype\.([\w$]+)[ \t]*=[ \t]*([^\n;]+)/.exec(item)) {
-        result.push({
-          type: 'property',
-          constructor: RegExp.$1,
-          cons: RegExp.$1,
-          name: RegExp.$2,
-          value: RegExp.$3,
-          string: RegExp.$1 + '.prototype.' + RegExp.$2
-        });
-        // method
-      } else if (/^([\w$.]+)\.([\w$]+)[ \t]*=[ \t]*function/.exec(item)) {
-        result.push({
-          type: 'method',
-          receiver: RegExp.$1,
-          name: RegExp.$2,
-          clean: RegExp.$1 + '.' + RegExp.$2,
-          args: RegExp.$3,
-          string: RegExp.$1 + '.' + RegExp.$2 + '()',
-          full: RegExp.$1 + '.' + RegExp.$2 + '(' + RegExp.$3 + ')',
-        });
-        // property
-      } else if (/^([\w$]+)\.([\w$]+)[ \t]*=[ \t]*([^\n;]+)/.exec(item)) {
-        result.push({
-          type: 'property',
-          receiver: RegExp.$1,
-          name: RegExp.$2,
-          value: RegExp.$3,
-          string: RegExp.$1 + '.' + RegExp.$2
-        });
-        // declaration
-      } else if (/^var +([\w$]+)[ \t]*=[ \t]*([^\n;]+)/.exec(item)) {
-        result.push({
-          type: 'declaration',
-          name: RegExp.$1,
-          value: RegExp.$2,
-          string: RegExp.$1
-        });
-      }
-      done();
-    }, function(err) {
-      if (err) {return cback(err);}
-    });
-    return cback(null, result);
-  }
-
-  function once(fn) {
-    var called = false;
-    if (typeof fn !== 'function') {
-      throw new TypeError('Must be fuction.');
-    }
-    return function() {
-      if (called) {
-        throw new Error('Callback already called.');
-      }
-      called = true;
-      fn.apply(this, arguments);
-    };
-  }
-
-  function each(arr, next, cb) {
-    var failed = false;
-    var count = 0;
-    cb = cb || function() {};
-    if (!Array.isArray(arr)) {
-      throw new TypeError('First argument must be an array');
-    }
-    if (typeof next !== 'function') {
-      throw new TypeError('Second argument must be a function');
-    }
-    var len = arr.length;
-    if (!len) {
-      return cb();
-    }
-
-    function callback(err) {
-      if (failed) {
-        return;
-      }
-      if (err !== undefined && err !== null) {
-        failed = true;
-        return cb(err);
-      }
-      if (++count === len) {
-        return cb();
-      }
-    }
-    for (var i = 0; i < len; i++) {
-      next(arr[i], i, once(callback));
-    }
-  }
+  var isBrowser = false;
+  var isNode = false;
+  var Request;
+  var defaultApiKey = '6b1e65b9-4186-45c2-8981-b77a9842c4f0';
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = parseCodeContext;
-    module.exports.sync = parseCodeContextSync;
+    isNode = true;
+    //extend = require('extend');
+    Request = require('request');
   } else {
-    window.jsCodeContext = parseCodeContext;
+    isBrowser = true;
+  }
+
+  var methodDefaults = {
+    generateIntegers: {
+      apiKey: defaultApiKey,
+      n: 3,
+      min: 1,
+      max: 5
+    },
+    generateDecimalFractions: {
+      apiKey: defaultApiKey,
+      n: 3,
+      decimalPlaces: 8
+    },
+    generateGaussians: {
+      apiKey: defaultApiKey,
+      n: 3,
+      mean: 400,
+      standardDeviation: 100,
+      significantDigits: 8
+    },
+    generateStrings: {
+      apiKey: defaultApiKey,
+      n: 3,
+      length: 400,
+        characters: 'abcdefghijklmnopqrstuvwxyz'
+    },
+    generateUUIDs: {
+      apiKey: defaultApiKey,
+      n: 3
+    },
+    generateBlobs: {
+      apiKey: defaultApiKey,
+      n: 3,
+      size: 1024
+    }
+  };
+
+  /**
+   * Initialize a new `RandomJs` instance with `body` object.
+   * See also https://api.random.org/json-rpc/1/basic
+   * 
+   * @param  {Object}    [body]      body object that will send to api
+   * @param  {Function}  [statusCb]  callback that recieves request status
+   * @return {RandomJs}
+   */
+
+  function RandomJs(body, statusCb) {
+    if (!(this instanceof RandomJs)) {return new RandomJs(body, statusCb);}
+    body = body || {};
+    this._request = {};
+    this._response = {};
+    this._callback = function() {};
+
+    this._url = 'https://api.random.org/json-rpc/1/invoke';
+
+    this._request.url = this._url;
+    this._request.json = true;
+
+    this._request.body = {};
+    this._request.body.jsonrpc = body.jsonrpc || '2.0';
+    this._request.body.method = body.method || 'generateIntegers';
+    this._request.body.params = body.params || methodDefaults.generateIntegers;
+    this._request.body.id = body.id || (0 | Math.random() * 1000);
+     
+    this._body = this._request.body;
+
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  }
+
+  /**
+   * Get status of request that will be send to API
+   *
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs|Object} returns self or RandomJs._request object
+   */
+
+  RandomJs.prototype.request = function(statusCb) {
+    if (statusCb) {
+      statusCb(this._request);
+      return this;
+    }
+    else {
+      return this._request;
+    }
+  };
+
+  /**
+   * Set your API key
+   *
+   * @param   {String}    <apikey>    your api key with that you will auth to api
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.apikey = function(value, statusCb) {
+    this._body.params.apiKey = apikey;
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  };
+
+  /**
+   * Set version of Random.Org JSON RPC API
+   *
+   * @param   {String}    <value>     default `'2.0'`
+   * @param   {Function}  [statusCb]  callback that recieves request status 
+   * callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.jsonrpc = function(value, statusCb) {
+    this._body.jsonrpc = jsonrpc;
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  };
+
+  /**
+   * Set which rpc method to use (see https://api.random.org/json-rpc/1/basic)
+   * 
+   * @param   {String}    <value>     default `'generateIntegers'`
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.method = function(value, statusCb) {
+    if (methodDefaults.hasOwnProperty(method)) {
+      methodDefaults[method].apiKey = this._body.params.apiKey;
+      this._body.method = method;
+      this._body.params = methodDefaults[method];
+    }
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  };
+
+  /**
+   * Set params object that will be attached to the request body
+   *
+   * @param   {Object}    <value>     default, `generateIntegers`'s defaults - 
+   * see [index.js#L24-L29](./index.js#L24-L29)
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.params = function(value, statusCb) {
+    if (typeof params === 'object') {
+      for (var key in params) {
+        if (this._body.params.hasOwnProperty(key) && this._body.params !== params[key]) {
+          this._body.params[key] = params[key];
+        }
+      }
+    }
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  };
+
+  /**
+   * Set id request body
+   *
+   * @param   {Object}    <value>     default `(0 | Math.random() * 1000)`
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.id = function(value, statusCb) {
+    this._body.id = id;
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  };
+
+  /**
+   * Set url to the api endpoint it's
+   * always https://api.random.org/json-rpc/1/invoke
+   * 
+   * @param   {String}    <value>     default `https://api.random.org/json-rpc/1/invoke`
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.url = function(value, statusCb) {
+    this._url = url;
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  };
+
+  /**
+   * Short-hand for `.url`
+   * 
+   * @param   {String}    <value>     same as [#url](#randomjs-url)
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.uri = function(value, statusCb) {
+    this.url(uri, statusCb);
+    return this;
+  };
+
+  /**
+   * Callback that will handle the response.
+   * You must provide function with 3 arguments that are
+   *
+   * - `xhrOrErr` **{Object}** if browser, will be `xhr request`, else `error`
+   * - `stream` **{Stream}** if browser, will be `null`, else [`request's stream`][request-url]
+   * - `body` **{Object}** always, response body object of the request
+   * 
+   * @param   {Function}  <fn>        done(xhrOrErr, stream, body)
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.callback = function(fn, statusCb) {
+    this._callback = fn;
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  };
+
+  /**
+   * Headers that will send with request.
+   * Always append `{'Content-Type': 'application/json'}` header to others.
+   * 
+   * @param   {Object}    <object>    default `{'Content-Type': 'application/json'}`
+   * @param   {Function}  [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.headers = function(object, statusCb) {
+    this._request.headers = headers;
+    if (statusCb) {statusCb(this._request);}
+    return this;
+  };
+
+  /**
+   * Send request to the JSON-RPC API
+   * 
+   * @param   {Boolean|Function}  [done]      if `false`, will use [#callback](#randomjs-callback)
+   * @param   {Function}          [statusCb]  callback that recieves request status
+   * @return  {RandomJs}
+   */
+
+  RandomJs.prototype.post = function(done, statusCb) {
+    var cb = done || this._callback, finish = false;
+    if (isNode) {
+      Request.post(this._request, cb);
+    } else if (isBrowser) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', this._request.url, true);
+      for (var header in this._request.headers) {
+        xhr.setRequestHeader(header, this._request.headers[header]);
+      }
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(this._request.body));
+
+      this._response = xhr;
+      xhr.onreadystatechange = function () {
+        if (!finish && xhr.readyState === 4) {
+          cb(xhr, null, JSON.parse(xhr.responseText));
+          finish = true;
+        }
+      }
+    }
+    if (statusCb) {statusCb(this._request);}
+  };
+
+
+  if (isNode) {
+    module.exports = RandomJs;
+  } else {
+    window.RandomJs = RandomJs;
   }
 })();

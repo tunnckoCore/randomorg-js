@@ -1,26 +1,36 @@
 {
-  "name": "js-code-context",
-  "version": "1.1.0",
-  "description": "RegExp expressions to parse javascript code context - for node and the browser.",
+  "name": "randomorg-js",
+  "version": "0.0.2",
+  "description": "Streaming Random.org JSON-RPC Javascript API - for node, command line (cli) and the browser.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "start": "node examples/node.js"
   },
   "bin": {
-    "jsCodeContext": "cli.js"
+    "randomjs": "bin/cli.js"
   },
-  "repository": "tunnckoCore/js-code-context",
+  "repository": "tunnckoCore/randomorg-js",
   "keywords": [
-    "regexp",
-    "regex",
-    "parse",
+    "js",
+    "json",
+    "rpc",
     "javascript",
-    "code",
-    "context",
+    "jsonrpc",
+    "api",
+    "random",
+    "randomorg",
+    "random.org",
     "node",
-    "browser"
+    "cli",
+    "browser",
+    "streaming",
+    "stream",
+    "request"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "request": "~2.37.0"
+  },
   "devDependencies": {
     "mocha": "~1.20.1",
     "should": "~4.0.4",
@@ -28,7 +38,7 @@
   },
   "licenses": [{
     "type": "MIT",
-    "url": "https://github.com/tunnckoCore/js-code-context/blob/master/license.md"
+    "url": "https://github.com/tunnckoCore/randomorg-js/blob/master/license.md"
   }],
   "author": {
     "name": "Charlike Mike Reagent",
