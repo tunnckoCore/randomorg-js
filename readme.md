@@ -23,7 +23,7 @@ $ npm install randomorg-js
 var JsonApi = new RandomJs();
 
 var result = JsonApi
-  .apikey('your api key here')
+  .apikey('6b1e65b9-4186-45c2-8981-b77a9842c4f0') // your apikey here
   .headers({'User-Agent': 'tunnckoCore/RandomJS'})
   .method('generateStrings')
   .params({n:4,length:11})
