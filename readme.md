@@ -39,7 +39,7 @@ var result = JsonApi
   });
 
 ```
-> **Note:** for node use `var RandomJs = require('randomjs-org')`
+> **Note:** for node use `var RandomJs = require('randomjs-org')`, If use in browser, don't send User-Agent header.
 
 
 ## Tests
