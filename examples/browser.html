@@ -1,34 +1,137 @@
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>RandomJs Browser tests</title>
+<meta charset="utf-8">
+<title>RandomJs Browser tests</title>
 </head>
 <body>
-  <script src="../index.js"></script>
-  <script>
+<script src="../index.js"></script>
+</body>
+<!-- placeholder for output -->
+<p id="op"><p>
+<script>
+
+//2 utility functions to show results on the screen
+
+showIt = function (myHTML) {
+  appendInnerHTML("op",myHTML);
+}
+
+appendInnerHTML = function (idin, myHTML) {
+  var myE= document.getElementById(idin);
+  myE.innerHTML  = myE.innerHTML + myHTML + "<br>";
+}
+
+//my convention , show which test / function / api we are calling
+onloadHandler = function () {
+  showIt("a random number between 0 and 100");
+}
+
+getRandom = function () {
   var JsonApi = new RandomJs();
 
-  var result = JsonApi
-    .apikey('3873f558-60bd-4697-ad98-eb3617df0427')
-    .method('generateStrings')
-    .params({n:4,length:11})
-    .post(function(xhrOrError, stream, body) {
-      //in browser:
-      //first argument is xhr object
-      //second argument is null
+      // A browser based call
+      // see https://api.random.org/json-rpc/1/basic for full details
 
-      //in node:
-      //first argument is error object or null
-      //second argument is stream
-      console.log('==START==')
-      console.log('==xhrOrError==')
-      console.log(xhrOrError)
-      console.log('==stream==')
-      console.log(stream)
-      console.log('==body==')
-      console.log(body)
-      console.log('==END==')
-    });
-  </script>
-</body>
+      // xhrOrError:  Object XMLHttpRequest
+
+      // stream: null
+
+      // body: Object
+      //   id:
+      //   jsonrpc: "2.0"
+
+      //   result: Object
+      //     advisoryDelay:
+      //     bitsLeft:
+      //     bitsUsed:
+      //       random: Object
+      //         completionTime:
+      //         data:   see api call 'parms' for how many elements requested
+      //   requestsLeft:
+
+
+  /*
+  tests change
+  1)
+      .method('generateStrings')
+  to
+      .method('generate2Strings')
+
+  expected results
+  return an error code - no method of this name
+
+  Actual results
+  returns an array of 4 integers
+
+  2)
+  change a valid api key
+      .apikey('9a4873a3-7126-44dd-a715-cbc89962830e')
+  to an invalid
+      .apikey('119a4873a3-7126-44dd-a715-cbc89962830e')
+
+  exprected results
+  returns
+
+  body.error.code  - 200
+  body.error.message - Parameter 'apiKey' is malformed
+
+
+  */
+
+  /*
+      .method('generateStrings')
+      .params({n:4,length:11})
+  */
+
+  //put your key in .apikey
+
+  var result = JsonApi
+      .apikey('9a4873a3-7126-44dd-a715-cbc89962830e')
+      .method('generateIntegers')
+      .params({
+          "n":1,
+          "min":0,
+          "max":100,
+          "replacement": true,
+          "base":10
+             })
+      .post(function(xhrOrError, stream, body) {
+
+      //showIt("==START==");
+      if(xhrOrError.statusText === "OK") {
+
+        if (typeof(body.error) != 'undefined' && body.error != null) {
+            showIt("Random.org API Error");
+            showIt(body.jsonrpc);
+            showIt(body.error.code);
+            showIt(body.error.message);
+            showIt('==END==');
+            return;
+        }
+
+         if(stream !== null) {
+          showIt('==stream==');
+          showIt(stream);
+        }
+
+        //showIt('==body.result.random.data==');
+        showIt(body.result.random.data);
+
+        //showIt('==END==');
+      } else {
+        showIt("xhrOrError.statusText: " + xhrOrError.statusText);
+        showIt("Probable Network Error connecting to Random.org ");
+      }
+
+      });
+
+}  //getRandom
+
+// overkill, useful if putting results in a canvas etc and not using jQuery
+window.addEventListener('load', onloadHandler, false);
+
+//process the random.org request
+getRandom();
+
+</script>
 </html>
