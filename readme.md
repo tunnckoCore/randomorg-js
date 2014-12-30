@@ -187,7 +187,7 @@ Always append `{'Content-Type': 'application/json'}` header to others.
 > Send request to the JSON-RPC API
 
 **params**
-- `[done]` **{Boolean|Function}** if `false`, will use [#callback](#randomjs-callback)
+- `[done]` **{Boolean|Function}** if `false`, will use [.callback](#callback)
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
