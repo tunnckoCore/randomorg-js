@@ -69,17 +69,17 @@ var result = randomJs
 See also https://api.random.org/json-rpc/1/basic
 
 **members**
-- [request(statusCb)](#randomjs-request)
-- [apikey(value, statusCb)](#randomjs-apikey)
-- [jsonrpc(value, statusCb)](#randomjs-jsonrpc)
-- [method(value, statusCb)](#randomjs-method)
-- [params(value, statusCb)](#randomjs-params)
-- [id(value, statusCb)](#randomjs-id)
-- [url(value, statusCb)](#randomjs-url)
-- [uri(value, statusCb)](#randomjs-uri)
-- [callback(fn, statusCb)](#randomjs-callback)
-- [headers(object, statusCb)](#randomjs-headers)
-- [post(done, statusCb)](#randomjs-post)
+- [request(statusCb)](#request)
+- [apikey(value, statusCb)](#apikey)
+- [jsonrpc(value, statusCb)](#jsonrpc)
+- [method(value, statusCb)](#method)
+- [params(value, statusCb)](#params)
+- [id(value, statusCb)](#id)
+- [url(value, statusCb)](#url)
+- [uri(value, statusCb)](#uri)
+- [callback(fn, statusCb)](#callback)
+- [headers(object, statusCb)](#headers)
+- [post(done, statusCb)](#post)
 
 **params**
 - `[body]` **{Object}** body object that will send to api
