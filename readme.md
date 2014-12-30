@@ -64,7 +64,7 @@ var result = randomJs
 
 
 ## API
-### RandomJs()
+### [RandomJs](./index.js#L66)
 > Initialize a new `RandomJs` instance with `body` object.  
 See also https://api.random.org/json-rpc/1/basic
 
@@ -87,7 +87,7 @@ See also https://api.random.org/json-rpc/1/basic
 - `return` **{RandomJs}**
 
 
-#### RandomJs# request()
+#### [.request](./index.js#L99)
 > Get status of request that will be send to API
 
 **params**
@@ -95,7 +95,7 @@ See also https://api.random.org/json-rpc/1/basic
 - `return` **{RandomJs|Object}** returns self or RandomJs._request object
 
 
-#### RandomJs# apikey()
+#### [.apikey](./index.js#L115)
 > Set your API key
 
 **params**
@@ -104,16 +104,16 @@ See also https://api.random.org/json-rpc/1/basic
 - `return` **{RandomJs}**
 
 
-#### RandomJs# jsonrpc()
+#### [.jsonrpc](./index.js#L132)
 > Set version of Random.Org JSON RPC API
 
 **params**
 - `<value>` **{String}** default `'2.0'`
-- `[statusCb]` **{Function}** callback that recieves request status callback that recieves request status
+- `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
 
-#### RandomJs# method()
+#### [.method](./index.js#L148)
 > Set which rpc method to use (see https://api.random.org/json-rpc/1/basic)
 
 **params**
@@ -122,7 +122,7 @@ See also https://api.random.org/json-rpc/1/basic
 - `return` **{RandomJs}**
 
 
-#### RandomJs# params()
+#### [.params](./index.js#L169)
 > Set params object that will be attached to the request body
 
 **params**
@@ -131,7 +131,7 @@ See also https://api.random.org/json-rpc/1/basic
 - `return` **{RandomJs}**
 
 
-#### RandomJs# id()
+#### [.id](./index.js#L209)
 > Set id request body
 
 **params**
@@ -140,7 +140,7 @@ See also https://api.random.org/json-rpc/1/basic
 - `return` **{RandomJs}**
 
 
-#### RandomJs# url()
+#### [.url](./index.js#L209)
 > Set url to the api endpoint it's always `https://api.random.org/json-rpc/1/invoke`
 
 **params**
@@ -149,7 +149,7 @@ See also https://api.random.org/json-rpc/1/basic
 - `return` **{RandomJs}**
 
 
-#### RandomJs# uri()
+#### [.uri](./index.js#L225)
 > Short-hand for `.url`
 
 **params**
@@ -158,7 +158,7 @@ See also https://api.random.org/json-rpc/1/basic
 - `return` **{RandomJs}**
 
 
-#### RandomJs# callback()
+#### [.callback](./index.js#L243)
 > Callback that will handle the response.
 
 **params**
@@ -173,7 +173,7 @@ See also https://api.random.org/json-rpc/1/basic
 - `body` **{Object}** always, response body object of the request
 
 
-#### RandomJs# headers()
+#### [.headers](./index.js#L260)
 > Headers that will send with request.  
 Always append `{'Content-Type': 'application/json'}` header to others.
 
@@ -183,7 +183,7 @@ Always append `{'Content-Type': 'application/json'}` header to others.
 - `return` **{RandomJs}**
 
 
-#### RandomJs# post()
+#### [.post](./index.js#L276)
 > Send request to the JSON-RPC API
 
 **params**
