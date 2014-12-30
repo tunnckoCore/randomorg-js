@@ -65,7 +65,7 @@ var result = randomJs
 
 ## API
 ### [RandomJs(body)](./index.js#L66)
-> Initialize a new `RandomJs` instance with `body` object.  
+> Initialize a new `RandomJs` instance with `[body]` (optional) object.  
 See also https://api.random.org/json-rpc/1/basic
 
 **members**
