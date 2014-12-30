@@ -64,7 +64,7 @@ var result = randomJs
 
 
 ## API
-### [RandomJs](./index.js#L66)
+### [RandomJs(body)](./index.js#L66)
 > Initialize a new `RandomJs` instance with `body` object.  
 See also https://api.random.org/json-rpc/1/basic
 
@@ -126,7 +126,7 @@ See also https://api.random.org/json-rpc/1/basic
 > Set params object that will be attached to the request body
 
 **params**
-- `<value>` **{Object}** default, `generateIntegers`'s defaults - see [index.js#L24-L29](./index.js#L24-L29)
+- `<value>` **{Object}** [see defaults at index.js#L21-55](./index.js#L21-55), `generateIntegers`'s defaults
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
@@ -153,7 +153,7 @@ See also https://api.random.org/json-rpc/1/basic
 > Short-hand for `.url`
 
 **params**
-- `<value>` **{String}** same as [#url](#randomjs-url)
+- `<value>` **{String}** same as [.url](#url)
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
