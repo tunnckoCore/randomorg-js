@@ -26,20 +26,24 @@
     "browser",
     "streaming",
     "stream",
-    "request"
+    "request",
+    "got",
+    "get"
   ],
   "dependencies": {
-    "request": "~2.37.0"
+    "request": "^2.51.0"
   },
   "devDependencies": {
     "mocha": "~1.20.1",
     "should": "~4.0.4",
     "minimist": "~0.2.0"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "https://github.com/tunnckoCore/randomorg-js/blob/master/license.md"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/tunnckoCore/randomorg-js/blob/master/license.md"
+    }
+  ],
   "author": {
     "name": "Charlike Mike Reagent",
     "email": "mameto_100@mail.bg",

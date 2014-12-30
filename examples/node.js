@@ -1,3 +1,12 @@
+/**
+ * randomorg-js <https://github.com/tunnckoCore/randomorg-js>
+ *
+ * Copyright (c) 2014 Charlike Mike Reagent, contributors.
+ * Released under the MIT license.
+ */
+
+'use strict';
+
 var RandomJs = require('../index');
 var JsonApi = new RandomJs();
 
@@ -7,13 +16,13 @@ var result = JsonApi
   .method('generateStrings')
   .params({n:4,length:11})
   .post(function(xhrOrError, stream, body) {
-    //in browser:
-    //first argument is xhr object
-    //second argument is null
+    in browser:
+    first argument is xhr object
+    second argument is null
 
-    //in node:
-    //first argument is error object or null
-    //second argument is stream
+    in node:
+    first argument is error object or null
+    second argument is stream
     console.log('==START==')
     console.log('==xhrOrError==')
     console.log(xhrOrError)

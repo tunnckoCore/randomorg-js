@@ -1,23 +1,22 @@
-/*!
+/**
  * randomorg-js <https://github.com/tunnckoCore/randomorg-js>
  *
  * Copyright (c) 2014 Charlike Mike Reagent, contributors.
  * Released under the MIT license.
  */
-(function() {
-  'use strict';
-  var isBrowser = false;
-  var isNode = false;
-  var Request;
-  var defaultApiKey = '6b1e65b9-4186-45c2-8981-b77a9842c4f0';
 
-  if (typeof module !== 'undefined' && module.exports) {
-    isNode = true;
-    //extend = require('extend');
-    Request = require('request');
+(function(global, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(factory(true));
+  } else if (typeof exports === 'object') {
+    module.exports = factory(true);
   } else {
-    isBrowser = true;
+    global.RandomJs = factory(false, true);
   }
+})(this, function(isNodeOrAMD, isBrowser) {
+  'use strict';
+
+  var defaultApiKey = '6b1e65b9-4186-45c2-8981-b77a9842c4f0';
 
   var methodDefaults = {
     generateIntegers: {
@@ -69,7 +68,7 @@
     body = body || {};
     this._request = {};
     this._response = {};
-    this._callback = function() {};
+    this._noop = function() {};
 
     this._url = 'https://api.random.org/json-rpc/1/invoke';
 
@@ -84,7 +83,9 @@
      
     this._body = this._request.body;
 
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   }
 
@@ -99,9 +100,8 @@
     if (statusCb) {
       statusCb(this._request);
       return this;
-    } else {
-      return this._request;
     }
+    return this._request;
   };
 
   /**
@@ -114,7 +114,9 @@
 
   RandomJs.prototype.apikey = function(value, statusCb) {
     this._body.params.apiKey = value;
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   };
 
@@ -129,7 +131,9 @@
 
   RandomJs.prototype.jsonrpc = function(value, statusCb) {
     this._body.jsonrpc = value;
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   };
 
@@ -147,7 +151,9 @@
       this._body.method = value;
       this._body.params = methodDefaults[value];
     }
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   };
 
@@ -162,13 +168,16 @@
 
   RandomJs.prototype.params = function(obj, statusCb) {
     if (typeof obj === 'object') {
+      var params = this._body.params;
       for (var key in obj) {
-        if (this._body.params.hasOwnProperty(key) && this._body.params !== obj[key]) {
-          this._body.params[key] = obj[key];
+        if (params.hasOwnProperty(key) && params !== obj[key]) {
+          params[key] = obj[key];
         }
       }
     }
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   };
 
@@ -182,7 +191,9 @@
 
   RandomJs.prototype.id = function(value, statusCb) {
     this._body.id = value;
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   };
 
@@ -197,7 +208,9 @@
 
   RandomJs.prototype.url = function(value, statusCb) {
     this._url = value;
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   };
 
@@ -228,8 +241,10 @@
    */
 
   RandomJs.prototype.callback = function(fn, statusCb) {
-    this._callback = fn;
-    if (statusCb) {statusCb(this._request);}
+    this._noop = fn;
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   };
 
@@ -244,7 +259,9 @@
 
   RandomJs.prototype.headers = function(obj, statusCb) {
     this._request.headers = obj;
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
     return this;
   };
 
@@ -257,33 +274,38 @@
    */
 
   RandomJs.prototype.post = function(done, statusCb) {
-    var cb = done || this._callback, finish = false;
-    if (isNode) {
-      Request.post(this._request, cb);
-    } else if (isBrowser) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', this._request.url, true);
-      for (var header in this._request.headers) {
-        xhr.setRequestHeader(header, this._request.headers[header]);
-      }
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify(this._request.body));
+    var cb = done || this._noop;
 
-      this._response = xhr;
-      xhr.onreadystatechange = function () {
-        if (!finish && xhr.readyState === 4) {
-          cb(xhr, null, JSON.parse(xhr.responseText));
-          finish = true;
-        }
-      }
+    if (isNodeOrAMD) {
+      var nodeRequest = require('request');
+      nodeRequest.post(this._request, cb);
+    } else if (isBrowser) {
+      xhrRequest(this._request, this._response, cb);
     }
-    if (statusCb) {statusCb(this._request);}
+    if (statusCb) {
+      statusCb(this._request);
+    }
   };
 
+  function xhrRequest(req, res, cb) {
+    var xhr = new XMLHttpRequest();
+    var finish = false;
+    xhr.open('POST', req.url, true);
+    for (var header in req.headers) {
+      xhr.setRequestHeader(header, req.headers[header]);
+    }
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(req.body));
 
-  if (isNode) {
-    module.exports = RandomJs;
-  } else {
-    window.RandomJs = RandomJs;
+    res = xhr;
+    xhr.onreadystatechange = function () {
+      if (!finish && xhr.readyState === 4) {
+        cb(xhr, null, JSON.parse(xhr.responseText));
+        finish = true;
+      }
+    }
+    return xhr;
   }
-})();
+
+  return RandomJs;
+});
