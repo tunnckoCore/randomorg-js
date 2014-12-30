@@ -1,16 +1,22 @@
 {
   "name": "randomorg-js",
-  "version": "0.0.4",
+  "version": "0.0.0",
   "description": "Streaming Random.org JSON-RPC Javascript API - for node, command line (cli) and the browser.",
-  "main": "index.js",
   "scripts": {
-    "test": "mocha -R spec",
-    "start": "node examples/node.js"
+    "lint": "jshint index.js && jscs index.js --reporter inline",
+    "test": "mocha",
+    "test-cov": "istanbul cover _mocha",
+    "test-travis": "istanbul cover _mocha --report lcovonly"
   },
-  "bin": {
-    "randomjs": "bin/cli.js"
+  "author": {
+    "name": "Charlike Make Reagent",
+    "email": "mameto_100@mail.bg",
+    "url": "https://github.com/tunnckoCore"
   },
-  "repository": "tunnckoCore/randomorg-js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tunnckoCore/randomorg-js.git"
+  },
   "keywords": [
     "js",
     "json",
@@ -30,23 +36,16 @@
     "got",
     "get"
   ],
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/tunnckoCore/randomorg-js/blob/master/license.md"
+  },
   "dependencies": {
     "request": "^2.51.0"
   },
   "devDependencies": {
-    "mocha": "~1.20.1",
-    "should": "~4.0.4",
-    "minimist": "~0.2.0"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/tunnckoCore/randomorg-js/blob/master/license.md"
-    }
-  ],
-  "author": {
-    "name": "Charlike Mike Reagent",
-    "email": "mameto_100@mail.bg",
-    "url": "http://www.whistle-bg.tk"
+    "istanbul-harmony": "^0.3.1",
+    "mocha": "*",
+    "mocha-lcov-reporter": "^0.0.1"
   }
 }

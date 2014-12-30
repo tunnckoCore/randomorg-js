@@ -57,7 +57,7 @@
   /**
    * Initialize a new `RandomJs` instance with `body` object.
    * See also https://api.random.org/json-rpc/1/basic
-   * 
+   *
    * @param  {Object}    [body]      body object that will send to api
    * @param  {Function}  [statusCb]  callback that recieves request status
    * @return {RandomJs}
@@ -80,7 +80,7 @@
     this._request.body.method = body.method || 'generateIntegers';
     this._request.body.params = body.params || methodDefaults.generateIntegers;
     this._request.body.id = body.id || (0 | Math.random() * 1000);
-     
+
     this._body = this._request.body;
 
     if (statusCb) {
@@ -124,7 +124,7 @@
    * Set version of Random.Org JSON RPC API
    *
    * @param   {String}    <value>     default `'2.0'`
-   * @param   {Function}  [statusCb]  callback that recieves request status 
+   * @param   {Function}  [statusCb]  callback that recieves request status
    * callback that recieves request status
    * @return  {RandomJs}
    */
@@ -139,7 +139,7 @@
 
   /**
    * Set which rpc method to use (see https://api.random.org/json-rpc/1/basic)
-   * 
+   *
    * @param   {String}    <value>     default `'generateIntegers'`
    * @param   {Function}  [statusCb]  callback that recieves request status
    * @return  {RandomJs}
@@ -160,7 +160,7 @@
   /**
    * Set params object that will be attached to the request body
    *
-   * @param   {Object}    <obj>       default, `generateIntegers`'s defaults - 
+   * @param   {Object}    <obj>       default, `generateIntegers`'s defaults -
    * see [index.js#L24-L29](./index.js#L24-L29)
    * @param   {Function}  [statusCb]  callback that recieves request status
    * @return  {RandomJs}
@@ -200,7 +200,7 @@
   /**
    * Set url to the api endpoint it's
    * always https://api.random.org/json-rpc/1/invoke
-   * 
+   *
    * @param   {String}    <value>     default `https://api.random.org/json-rpc/1/invoke`
    * @param   {Function}  [statusCb]  callback that recieves request status
    * @return  {RandomJs}
@@ -216,7 +216,7 @@
 
   /**
    * Short-hand for `.url`
-   * 
+   *
    * @param   {String}    <value>     same as [#url](#randomjs-url)
    * @param   {Function}  [statusCb]  callback that recieves request status
    * @return  {RandomJs}
@@ -234,7 +234,7 @@
    * - `xhrOrErr` **{Object}** if browser, will be `xhr request`, else `error`
    * - `stream` **{Stream}** if browser, will be `null`, else [`request's stream`][request-url]
    * - `body` **{Object}** always, response body object of the request
-   * 
+   *
    * @param   {Function}  <fn>        done(xhrOrErr, stream, body)
    * @param   {Function}  [statusCb]  callback that recieves request status
    * @return  {RandomJs}
@@ -251,7 +251,7 @@
   /**
    * Headers that will send with request.
    * Always append `{'Content-Type': 'application/json'}` header to others.
-   * 
+   *
    * @param   {Object}    <obj>       default `{'Content-Type': 'application/json'}`
    * @param   {Function}  [statusCb]  callback that recieves request status
    * @return  {RandomJs}
@@ -267,7 +267,7 @@
 
   /**
    * Send request to the JSON-RPC API
-   * 
+   *
    * @param   {Boolean|Function}  [done]      if `false`, will use [#callback](#randomjs-callback)
    * @param   {Function}          [statusCb]  callback that recieves request status
    * @return  {RandomJs}

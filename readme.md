@@ -1,36 +1,58 @@
-# randomorg-js
+## [![npm][npmjs-img]][npmjs-url] [![mit license][license-img]][license-url] [![build status][travis-img]][travis-url] [![coverage status][coveralls-img]][coveralls-url] [![deps status][daviddm-img]][daviddm-url]
+
 > Streaming Random.org JSON-RPC Javascript API - for node, command line (cli) and the browser.
 
-[![NPM version][npmjs-shields]][npmjs-url]
-[![Using ferver][ferver-img]][ferver-url]
-[![Build Status][travis-img]][travis-url]
-[![Deps Status][depstat-img]][depstat-url]
-
-
-## Install [![Nodei.co stats][npmjs-install]][npmjs-url] 
-> Install with [npm](https://npmjs.org)
-
-```
-$ npm install randomorg-js
+## Install
+```bash
+npm install randomorg-js
+npm test
 ```
 
 
-## Usage / Example
-> For a more comprehensive examples, see the [tests](./test/index.js).
+## Include in html
+> After that you can use directly `new RandomJs()` class.
 
-#### node & browser (without browserify)
+```html
+<script src="https://cdn.rawgit.com/tunnckoCore/randomorg-js/master/dist/randomorg-js.js"></script>
+```
+
+
+## Usage in node.js
+> For more use-cases see the [tests](./test.js) and [examples](./examples)
+
 ```js
-var JsonApi = new RandomJs();
+var RandomJs = require('randomorg-js');
+var randomJs = new RandomJs();
 
-var result = JsonApi
+var result = randomJs
   .apikey('6b1e65b9-4186-45c2-8981-b77a9842c4f0') // your apikey here
-  .headers({'User-Agent': 'tunnckoCore/RandomJS'})
+  .headers({'User-Agent': 'https://github.com/tunnckoCore/randomorg-js'})
   .method('generateStrings')
   .params({n:4,length:11})
-  .post(function(xhrOrError, stream, body) {
+  .post(function(error, stream, body) {
     console.log('==START==')
-    console.log('==xhrOrError==')
-    console.log(xhrOrError)
+    console.log('==error==')
+    console.log(error)
+    console.log('==stream==')
+    console.log(stream)
+    console.log('==body==')
+    console.log(body)
+    console.log('==END==')
+  });
+```
+
+## Usage in browser
+```js
+var randomJs = new RandomJs();
+
+var result = randomJs
+  .apikey('6b1e65b9-4186-45c2-8981-b77a9842c4f0') // your apikey here
+  .method('generateStrings')
+  .params({n:4,length:11})
+  .post(function(xhr, stream, body) {
+    console.log('==START==')
+    console.log('==xhr==')
+    console.log(xhr)
     console.log('==stream==')
     console.log(stream)
     console.log('==body==')
@@ -39,23 +61,11 @@ var result = JsonApi
   });
 
 ```
-> **Note:** for node use `var RandomJs = require('randomjs-org')`, If use in browser, don't send User-Agent header.
-
-
-## Tests
-> As usual - `npm test` **or** if you have [mocha][mocha-url] globally - `mocha`.
-
-```
-$ npm test
-$ npm start
-```
-> `npm start` will start node example from examples/node.js,
-for browser example run examples/browser.html
 
 
 ## API
 ### RandomJs()
-Initialize a new `RandomJs` instance with `body` object.
+> Initialize a new `RandomJs` instance with `body` object.  
 See also https://api.random.org/json-rpc/1/basic
 
 **members**
@@ -76,206 +86,95 @@ See also https://api.random.org/json-rpc/1/basic
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-function RandomJs(body, statusCb) {
-  if (!(this instanceof RandomJs)) {return new RandomJs(body, statusCb);}
-  body = body || {};
-  this._request = {};
-  this._response = {};
-  this._callback = function() {};
-
-  this._url = 'https://api.random.org/json-rpc/1/invoke';
-
-  this._request.url = this._url;
-  this._request.json = true;
-
-  this._request.body = {};
-  this._request.body.jsonrpc = body.jsonrpc || '2.0';
-  this._request.body.method = body.method || 'generateIntegers';
-  this._request.body.params = body.params || methodDefaults.generateIntegers;
-  this._request.body.id = body.id || (0 | Math.random() * 1000);
-  
-  this._body = this._request.body;
-
-  if (statusCb) {statusCb(this._request);}
-  return this;
-}
-```
 
 #### RandomJs# request()
-Get status of request that will be send to API
+> Get status of request that will be send to API
 
 **params**
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs|Object}** returns self or RandomJs._request object
 
-**source**
-```js
-RandomJs.prototype.request = function(statusCb) {
-  if (statusCb) {
-    statusCb(this._request);
-    return this;
-  }
-  else {
-    return this._request;
-  }
-};
-```
 
 #### RandomJs# apikey()
-Set your API key
+> Set your API key
 
 **params**
 - `<apikey>` **{String}** your api key with that you will auth to api
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.apikey = function(value, statusCb) {
-  this._body.params.apiKey = apikey;
-  if (statusCb) {statusCb(this._request);}
-  return this;
-};
-```
 
 #### RandomJs# jsonrpc()
-Set version of Random.Org JSON RPC API
+> Set version of Random.Org JSON RPC API
 
 **params**
 - `<value>` **{String}** default `'2.0'`
 - `[statusCb]` **{Function}** callback that recieves request status callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.jsonrpc = function(value, statusCb) {
-  this._body.jsonrpc = jsonrpc;
-  if (statusCb) {statusCb(this._request);}
-  return this;
-};
-```
 
 #### RandomJs# method()
-Set which rpc method to use (see https://api.random.org/json-rpc/1/basic)
+> Set which rpc method to use (see https://api.random.org/json-rpc/1/basic)
 
 **params**
 - `<value>` **{String}** default `'generateIntegers'`
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.method = function(value, statusCb) {
-  if (methodDefaults.hasOwnProperty(method)) {
-    methodDefaults[method].apiKey = this._body.params.apiKey;
-    this._body.method = method;
-    this._body.params = methodDefaults[method];
-  }
-  if (statusCb) {statusCb(this._request);}
-  return this;
-};
-```
 
 #### RandomJs# params()
-Set params object that will be attached to the request body
+> Set params object that will be attached to the request body
 
 **params**
 - `<value>` **{Object}** default, `generateIntegers`'s defaults - see [index.js#L24-L29](./index.js#L24-L29)
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.params = function(value, statusCb) {
-  if (typeof params === 'object') {
-    for (var key in params) {
-      if (this._body.params.hasOwnProperty(key) && this._body.params !== params[key]) {
-        this._body.params[key] = params[key];
-      }
-    }
-  }
-  if (statusCb) {statusCb(this._request);}
-  return this;
-};
-```
 
 #### RandomJs# id()
-Set id request body
+> Set id request body
 
 **params**
 - `<value>` **{Object}** default `(0 | Math.random() * 1000)`
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.id = function(value, statusCb) {
-  this._body.id = id;
-  if (statusCb) {statusCb(this._request);}
-  return this;
-};
-```
 
 #### RandomJs# url()
-Set url to the api endpoint it's
-always https://api.random.org/json-rpc/1/invoke
+> Set url to the api endpoint it's always `https://api.random.org/json-rpc/1/invoke`
 
 **params**
 - `<value>` **{String}** default `https://api.random.org/json-rpc/1/invoke`
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.url = function(value, statusCb) {
-  this._url = url;
-  if (statusCb) {statusCb(this._request);}
-  return this;
-};
-```
 
 #### RandomJs# uri()
-Short-hand for `.url`
+> Short-hand for `.url`
 
 **params**
 - `<value>` **{String}** same as [#url](#randomjs-url)
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.uri = function(value, statusCb) {
-  this.url(uri, statusCb);
-  return this;
-};
-```
 
 #### RandomJs# callback()
-Callback that will handle the response.
-You must provide function with 3 arguments that are
+> Callback that will handle the response.
+
+**params**
+- `<fn>` **{Function}** cb(`xhrOrErr`, `stream`, `body`)
+- `[statusCb]` **{Function}** callback that recieves request status
+- `return` **{RandomJs}**
+
+> You must provide function with 3 arguments that are
 
 - `xhrOrErr` **{Object}** if browser, will be `xhr request`, else `error`
 - `stream` **{Stream}** if browser, will be `null`, else [`request's stream`][request-url]
 - `body` **{Object}** always, response body object of the request
 
-**params**
-- `<fn>` **{Function}** done(xhrOrErr, stream, body)
-- `[statusCb]` **{Function}** callback that recieves request status
-- `return` **{RandomJs}**
-
-**source**
-```js
-RandomJs.prototype.callback = function(fn, statusCb) {
-  this._callback = fn;
-  if (statusCb) {statusCb(this._request);}
-  return this;
-};
-```
 
 #### RandomJs# headers()
-Headers that will send with request.
+> Headers that will send with request.  
 Always append `{'Content-Type': 'application/json'}` header to others.
 
 **params**
@@ -283,89 +182,54 @@ Always append `{'Content-Type': 'application/json'}` header to others.
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.headers = function(object, statusCb) {
-  this._request.headers = headers;
-  if (statusCb) {statusCb(this._request);}
-  return this;
-};
-```
 
 #### RandomJs# post()
-Send request to the JSON-RPC API
+> Send request to the JSON-RPC API
 
 **params**
 - `[done]` **{Boolean|Function}** if `false`, will use [#callback](#randomjs-callback)
 - `[statusCb]` **{Function}** callback that recieves request status
 - `return` **{RandomJs}**
 
-**source**
-```js
-RandomJs.prototype.post = function(done, statusCb) {
-  var cb = done || this._callback, finish = false;
-  if (isNode) {
-    Request.post(this._request, cb);
-  } else if (isBrowser) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', this._request.url, true);
-    for (var header in this._request.headers) {
-      xhr.setRequestHeader(header, this._request.headers[header]);
-    }
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(this._request.body));
-
-    this._response = xhr;
-    xhr.onreadystatechange = function () {
-      if (!finish && xhr.readyState === 4) {
-        cb(xhr, null, JSON.parse(xhr.responseText));
-        finish = true;
-      }
-    }
-  }
-  if (statusCb) {statusCb(this._request);}
-};
-```
 
 
-## Authors & Contributors [![author tips][author-gittip-img]][author-gittip]
-
+## Author
 **Charlike Mike Reagent**
-+ [gittip/tunnckoCore][author-gittip]
-+ [github/tunnckoCore][author-github]
++ [gratipay/tunnckoCore][author-gratipay]
 + [twitter/tunnckoCore][author-twitter]
++ [github/tunnckoCore][author-github]
 + [npmjs/tunnckoCore][author-npmjs]
++ [more ...][contrib-more]
 
 
 ## License [![MIT license][license-img]][license-url]
-Copyright (c) 2014 [Charlike Mike Reagent][author-website], [contributors][contrib-url].  
+Copyright (c) 2014 [Charlike Mike Reagent][contrib-more], [contributors][contrib-graf].  
 Released under the [`MIT`][license-url] license.
 
 
-[mocha-url]: https://github.com/visionmedia/mocha
-
-[contrib-url]: https://github.com/tunnckoCore/randomorg-js/graphs/contributors
 [npmjs-url]: http://npm.im/randomorg-js
-[npmjs-shields]: http://img.shields.io/npm/v/randomorg-js.svg
-[npmjs-install]: https://nodei.co/npm/randomorg-js.svg?mini=true
+[npmjs-img]: https://img.shields.io/npm/v/randomorg-js.svg?style=flat&label=randomorg-js
+
+[coveralls-url]: https://coveralls.io/r/tunnckoCore/randomorg-js?branch=master
+[coveralls-img]: https://img.shields.io/coveralls/tunnckoCore/randomorg-js.svg?style=flat
 
 [license-url]: https://github.com/tunnckoCore/randomorg-js/blob/master/license.md
-[license-img]: http://img.shields.io/badge/license-MIT-blue.svg
+[license-img]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
 
 [travis-url]: https://travis-ci.org/tunnckoCore/randomorg-js
-[travis-img]: https://travis-ci.org/tunnckoCore/randomorg-js.svg?branch=master
+[travis-img]: https://img.shields.io/travis/tunnckoCore/randomorg-js.svg?style=flat
 
-[depstat-url]: https://david-dm.org/tunnckoCore/randomorg-js
-[depstat-img]: https://david-dm.org/tunnckoCore/randomorg-js.svg
+[daviddm-url]: https://david-dm.org/tunnckoCore/randomorg-js
+[daviddm-img]: https://img.shields.io/david/tunnckoCore/randomorg-js.svg?style=flat
 
-[author-gittip-img]: http://img.shields.io/gittip/tunnckoCore.svg
-[author-gittip]: https://www.gittip.com/tunnckoCore
-[author-github]: https://github.com/tunnckoCore
+[author-gratipay]: https://gratipay.com/tunnckoCore
 [author-twitter]: https://twitter.com/tunnckoCore
-[author-website]: http://www.whistle-bg.tk
+[author-github]: https://github.com/tunnckoCore
 [author-npmjs]: https://npmjs.org/~tunnckocore
 
-[ferver-img]: http://img.shields.io/badge/using-ferver-585858.svg
-[ferver-url]: https://github.com/jonathanong/ferver
+[contrib-more]: http://j.mp/1stW47C
+[contrib-graf]: https://github.com/tunnckoCore/randomorg-js/graphs/contributors
 
-[request-url]: https://github.com/mikeal/request
+***
+
+_Powered and automated by [readdirp + hogan.js](https://github.com/tunnckoCore), December 30, 2014_
