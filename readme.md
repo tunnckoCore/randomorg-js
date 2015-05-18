@@ -2,6 +2,8 @@
 
 > Streaming Random.org JSON-RPC Javascript API - for node, command line (cli) and the browser.
 
+### [upcoming v2](https://github.com/tunnckoCore/randomorg-js/milestones/v2) soon
+
 ## Install
 ```bash
 npm install randomorg-js
