@@ -1,6 +1,6 @@
 {
   "name": "randomorg-js",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "The official Random.org API client for Node.js and the browser",
   "repository": "tunnckoCore/randomorg-js",
   "author": "Charlike Mike Reagent <@tunnckoCore> (https://i.am.charlike.online)",
@@ -50,7 +50,26 @@
   "files": [
     "dist/"
   ],
-  "keywords": [],
+  "keywords": [
+    "api",
+    "browser",
+    "browsers",
+    "chrome",
+    "javascript",
+    "js",
+    "json",
+    "json-rpc",
+    "node",
+    "old",
+    "old-browsers",
+    "org",
+    "random",
+    "random-org",
+    "randomorg",
+    "randomorg-js",
+    "request",
+    "rpc"
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
