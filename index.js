@@ -167,10 +167,10 @@
    */
 
   RandomJs.prototype.params = function(obj, statusCb) {
-    if (typeof obj === 'object') {
+    if (obj && typeof obj === 'object') {
       var params = this._body.params;
       for (var key in obj) {
-        if (params.hasOwnProperty(key) && params !== obj[key]) {
+        if (obj.hasOwnProperty(key)) {
           params[key] = obj[key];
         }
       }
