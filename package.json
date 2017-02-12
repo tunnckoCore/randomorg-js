@@ -1,51 +1,94 @@
 {
   "name": "randomorg-js",
-  "version": "1.0.0",
-  "description": "Streaming Random.org JSON-RPC Javascript API - for node, command line (cli) and the browser.",
+  "version": "0.1.0",
+  "description": "The official Random.org API client for Node.js and the browser",
+  "repository": "tunnckoCore/randomorg-js",
+  "author": "Charlike Mike Reagent <@tunnckoCore> (https://i.am.charlike.online)",
+  "precommit.silent": true,
+  "jsnext:main": "dist/randomorg.es.js",
+  "module": "dist/randomorg.es.js",
+  "main": "dist/randomorg.common.js",
+  "license": "MIT",
   "scripts": {
-    "lint": "jshint index.js && jscs index.js --reporter inline",
-    "test": "mocha",
-    "test-cov": "istanbul cover _mocha",
-    "test-travis": "istanbul cover _mocha --report lcovonly"
-  },
-  "author": {
-    "name": "Charlike Make Reagent",
-    "email": "mameto_100@mail.bg",
-    "url": "https://github.com/tunnckoCore"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/tunnckoCore/randomorg-js.git"
-  },
-  "keywords": [
-    "js",
-    "json",
-    "rpc",
-    "javascript",
-    "jsonrpc",
-    "api",
-    "random",
-    "randomorg",
-    "random.org",
-    "node",
-    "cli",
-    "browser",
-    "streaming",
-    "stream",
-    "request",
-    "got",
-    "get"
-  ],
-  "license": {
-    "type": "MIT",
-    "url": "https://github.com/tunnckoCore/randomorg-js/blob/master/license.md"
+    "lint": "standard --fix --verbose",
+    "test": "npm-run-all -s test:*",
+    "test:api": "nyc --reporter lcov node test.js",
+    "test:report": "nyc report",
+    "prerelease": "npm test",
+    "release": "standard-version --sign --no-verify",
+    "git": "npm-run-all -s git:*",
+    "git:add": "git add --all",
+    "git:cz": "git-cz",
+    "commit": "npm-run-all -s test build git",
+    "build": "npm-run-all -s build:*",
+    "build:clean": "rimraf dist",
+    "build:browser": "rollup -c --environment BROWSER",
+    "build:node": "rollup -c --environment NODE",
+    "build:show": "ls -al dist"
   },
   "dependencies": {
-    "request": "^2.51.0"
+    "simple-get": "^2.4.0"
   },
   "devDependencies": {
-    "istanbul-harmony": "^0.3.1",
-    "mocha": "*",
-    "mocha-lcov-reporter": "^0.0.1"
+    "commitizen": "^2.9.2",
+    "cz-conventional-changelog": "^1.2.0",
+    "mukla": "^0.4.8",
+    "npm-run-all": "^4.0.1",
+    "nyc": "^10.0.0",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^2.5.4",
+    "rollup": "^0.41.4",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-uglify": "^1.0.1",
+    "rollup-plugin-zopfli": "^1.0.2",
+    "standard": "^8.6.0",
+    "standard-version": "^4.0.0",
+    "xhr": "^2.3.3"
+  },
+  "files": [
+    "dist/"
+  ],
+  "keywords": [],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "verb": {
+    "run": true,
+    "toc": {
+      "render": true,
+      "method": "preWrite",
+      "maxdepth": 3,
+      "footer": ""
+    },
+    "layout": "empty",
+    "tasks": [
+      "readme"
+    ],
+    "related": {
+      "list": [
+        "always-done",
+        "minibase",
+        "try-catch-core"
+      ],
+      "highlight": "always-done"
+    },
+    "lint": {
+      "reflinks": true
+    }
+  },
+  "engines": {
+    "node": ">=4",
+    "npm": ">=2"
+  },
+  "nyc": {
+    "check-coverage": true,
+    "statements": 100,
+    "functions": 100,
+    "branches": 83,
+    "lines": 100
   }
 }
