@@ -5,6 +5,7 @@
   "repository": "tunnckoCore/randomorg-js",
   "author": "Charlike Mike Reagent <@tunnckoCore> (https://i.am.charlike.online)",
   "precommit.silent": true,
+  "browser": "dist/randomorg.min.js",
   "jsnext:main": "dist/randomorg.es.js",
   "module": "dist/randomorg.es.js",
   "main": "dist/randomorg.common.js",
