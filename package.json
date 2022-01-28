@@ -27,7 +27,7 @@
     "build:show": "ls -al dist"
   },
   "dependencies": {
-    "simple-get": "^2.4.0"
+    "simple-get": "^4.0.1"
   },
   "devDependencies": {
     "commitizen": "^2.9.2",
